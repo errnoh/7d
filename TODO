@@ -1,0 +1,7 @@
+Current output is mostly for simple testing purposes
+    - Add UTF8 week view for terminals
+    - Probably add html output as well
+Flag to view past and future weeks (offset)
+Flag to display different outputs
+
+

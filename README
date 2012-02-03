@@ -1,0 +1,24 @@
+Seven Days (7d) is a simple calendar software.
+
+Main point is that quite often I find myself being only interested in the stuff that is 
+happening during the next seven days.
+I also tend to have weekly entries and I dislike complex syntax or having to click through
+pile of menus before I can add simple entry.
+
+7d reads a simple plaintext file that has calendar entries formatted in simple syntax:
+        each|every <weekday> <description>
+    or
+        <date> <description>
+
+Everything else is discarded so you can store whatever else you want in the same file.
+
+<date> can be formatted in three ways:
+    25.3.2012
+    2012-03-25
+    25.3    <- Uses the _current_ year.
+
+One thing to note: If current day is Wednesday for example,
+the displayed Monday and Tuesday will be the _next_ weeks, not the previous days.
+You will never see past dates. (Unless you offset the week that is)
+
+author: Erno Hopearuoho ( https://github.com/errnoh )
