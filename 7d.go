@@ -154,15 +154,13 @@ func parseData(target string) {
 				continue
 			}
 
-			// Parsed date starts from 00:00 so we'll add 24 hours to make sure that
-			// entries for the current date are displayed as well.
-			since := time.Since(date.Add(time.Hour * 24)) // TODO: offset flag?
+			since := time.Since(date)
 			// no need for entries in the past
 			if since > 0 {
 				continue
 			}
 
-			untildate := (time.Hour * 24 * 6) + since
+			untildate := (time.Hour * 24 * 7) + since
 			if untildate > (time.Hour * 24 * 4) {
 				addEntry(row[1:], int(date.Weekday()), 2)
 			} else if untildate > 0 {
