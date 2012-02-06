@@ -30,6 +30,7 @@ import (
 	"os"
 	"strings"
 	"time"
+        "fmt"
 )
 
 var filename *string = flag.String("file", "", "file to read the data from")
@@ -44,7 +45,16 @@ type entry struct {
 }
 
 func (e entry) String() string {
-	return e.text
+        var s string
+		switch e.priority {
+		case 0:
+			s += "\x1b[1;32m"
+		case 1:
+		case 2:
+			s += "\x1b[1;31m"
+		}
+		s += " " + e.text + "\x1b[0m\n"
+	return s
 }
 
 // A single day. :)
@@ -63,15 +73,8 @@ func (d Day) String() (s string) {
 		s += time.Weekday(d.number%7).String() + ":\n"
 	}
 	for _, e := range d.entries {
-		switch e.priority {
-		case 0:
-			s += "\x1b[1;32m"
-		case 1:
-		case 2:
-			s += "\x1b[1;31m"
-		}
-		s += " " + e.text + "\x1b[0m\n"
-	}
+            s += e.String()
+        }
 	return
 }
 
@@ -82,30 +85,18 @@ var week Week = make([]Day, 7)
 
 var today int
 
-// Text output, displays a week, starting from Sunday.
-func (w Week) String() (s string) {
-	for _, d := range week {
-		s += (d.String())
-	}
-	return
-}
-
-// Text output, displays a week forward, starting from the current day.
-func (w Week) StringFromToday() (s string) {
-	for i := 0; i < len(week); i++ {
-		s += week[(today+i)%7].String()
-	}
-	return
-}
-
 func main() {
 	flag.Parse()
 	now := time.Now()
+        hour, min, sec := now.Clock()
+        extra, _ := time.ParseDuration(fmt.Sprintf("-%sh%sm%ss",hour,min,sec))
+        now = now.Add(extra);
 	today = int(now.Weekday())
 	initWeek()
 	parseData(*filename)
-	//	println(week.String())
+	//println(week.String())
 	println(week.StringFromToday())
+        //println(week.StringCalendar())
 }
 
 func chkerr(err error) {
@@ -154,7 +145,7 @@ func parseData(target string) {
 				continue
 			}
 
-			since := time.Since(date)
+			since := time.Since(date.Add(time.Hour*23+time.Minute*59))
 			// no need for entries in the past
 			if since > 0 {
 				continue
@@ -223,3 +214,5 @@ func getDay(day string) int {
 	}
 	return 7
 }
+
+
