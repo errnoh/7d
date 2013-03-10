@@ -3,5 +3,6 @@ Current output is mostly for simple testing purposes
     - Probably add html output as well
 Flag to view past and future weeks (offset)
 Flag to display different outputs
-
+Stdin input
+Config file, default calendar file, multiple files?
 

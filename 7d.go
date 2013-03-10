@@ -50,6 +50,7 @@ func (e entry) String() string {
 	case 0:
 		s += "\x1b[1;32m"
 	case 1:
+		return e.text
 	case 2:
 		s += "\x1b[1;31m"
 	}
@@ -96,7 +97,6 @@ func main() {
 	parseData(*filename)
 	//println(week.String())
 	println(week.StringFromToday())
-	//println(week.StringCalendar())
 }
 
 func chkerr(err error) {
@@ -186,7 +186,11 @@ func parseTime(s string) (date time.Time, err error) {
 	}
 	date, err = time.Parse("2.1", s)
 	if err == nil {
-		date = date.AddDate(2012, 0, 0)
+		today := time.Now()
+		date = date.AddDate(today.Year(), 0, 0)
+		if today.After(date) {
+			date = date.AddDate(1, 0, 0)
+		}
 	}
 	return
 }
